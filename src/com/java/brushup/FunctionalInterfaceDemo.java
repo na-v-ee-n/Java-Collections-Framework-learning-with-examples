@@ -1,208 +1,196 @@
 package com.java.brushup;
 
-import java.util.function.*;
-
-/* FUNCTIONAL INTERFACE DEFINITION:
+/**
+ * FUNCTIONAL INTERFACE - Step by Step Learning
  * 
- * FUNCTIONAL INTERFACE = Interface with exactly ONE abstract method
+ * What is a Functional Interface?
+ * - An interface with EXACTLY ONE abstract method
  * - Can have multiple default and static methods
- * - Annotated with @FunctionalInterface (optional but recommended)
- * - Target for lambda expressions and method references
- * - Foundation of functional programming in Java 8+
- * 
- * BUILT-IN FUNCTIONAL INTERFACES (java.util.function):
- * 
- * 1. PREDICATE<T> - Takes T, returns boolean
- *    - test(T t) - for filtering/testing conditions
- * 
- * 2. FUNCTION<T,R> - Takes T, returns R
- *    - apply(T t) - for transforming/mapping
- * 
- * 3. CONSUMER<T> - Takes T, returns void
- *    - accept(T t) - for consuming/processing
- * 
- * 4. SUPPLIER<T> - Takes nothing, returns T
- *    - get() - for supplying/generating values
- * 
- * 5. BIFUNCTION<T,U,R> - Takes T and U, returns R
- *    - apply(T t, U u) - for binary operations
- * 
- * 6. UNARYOPERATOR<T> - Takes T, returns T (extends Function<T,T>)
- *    - apply(T t) - for same-type transformations
- * 
- * 7. BINARYOPERATOR<T> - Takes two T, returns T (extends BiFunction<T,T,T>)
- *    - apply(T t1, T t2) - for combining same types
+ * - Used as foundation for lambda expressions (we'll learn lambdas next!)
+ * - Marked with @FunctionalInterface annotation (optional but recommended)
  */
 
-// Custom functional interface
+// Step 1: Creating a simple functional interface
 @FunctionalInterface
 interface Calculator {
+    // Only ONE abstract method allowed
     int calculate(int a, int b);
     
-    // Default methods allowed
+    // Default methods are allowed (they have implementation)
     default void printResult(int a, int b) {
         System.out.println("Result: " + calculate(a, b));
     }
     
-    // Static methods allowed
+    // Static methods are allowed
     static void info() {
-        System.out.println("Calculator functional interface");
+        System.out.println("This is Calculator functional interface");
     }
+}
+
+// Step 2: More functional interface examples
+@FunctionalInterface
+interface StringChecker {
+    boolean check(String text);
+}
+
+@FunctionalInterface
+interface NumberProcessor {
+    void process(int number);
+}
+
+@FunctionalInterface
+interface ValueSupplier {
+    String getValue();
 }
 
 public class FunctionalInterfaceDemo {
     
     public static void main(String[] args) {
-        System.out.println("=== FUNCTIONAL INTERFACE DEMO ===\n");
+        System.out.println("=== FUNCTIONAL INTERFACE BASICS ===\n");
         
-        demonstrateCustomFunctionalInterface();
-        demonstrateBuiltInInterfaces();
-        demonstratePredicates();
-        demonstrateFunctions();
-        demonstrateConsumers();
-        demonstrateSuppliers();
+       step1_TraditionalWay();
+        // step2_AnonymousClasses();
+        // step3_WhyFunctionalInterfaces();
+        // step4_BuiltInInterfaces();
     }
     
-    public static void demonstrateCustomFunctionalInterface() {
-        System.out.println("1. CUSTOM FUNCTIONAL INTERFACE:");
+    // Step 1: Traditional way - Creating classes
+    public static void step1_TraditionalWay() {
+        System.out.println("STEP 1: Traditional Way (Creating Classes)\n");
         
-        // Using lambda expression
-        Calculator add = (a, b) -> a + b;
-        Calculator multiply = (a, b) -> a * b;
-        Calculator subtract = (a, b) -> a - b;
+        // We need to create separate classes for each operation
+        Calculator adder = new Addition();
+        Calculator multiplier = new Multiplication();
         
-        System.out.println("Addition: " + add.calculate(10, 5));
-        System.out.println("Multiplication: " + multiply.calculate(10, 5));
-        System.out.println("Subtraction: " + subtract.calculate(10, 5));
+        System.out.println("10 + 5 = " + adder.calculate(10, 5));
+        System.out.println("10 * 5 = " + multiplier.calculate(10, 5));
+        
+        System.out.println("Problem: Too many classes for simple operations!\n");
+    }
+    
+    // Step 2: Anonymous classes - Better but still verbose
+    public static void step2_AnonymousClasses() {
+        System.out.println("STEP 2: Anonymous Classes (Better but Verbose)\n");
+        
+        // Create implementation without separate class files
+        Calculator subtractor = new Calculator() {
+            @Override
+            public int calculate(int a, int b) {
+                return a - b;
+            }
+        };
+        
+        Calculator divider = new Calculator() {
+            @Override
+            public int calculate(int a, int b) {
+                return a / b;
+            }
+        };
+        
+        System.out.println("10 - 5 = " + subtractor.calculate(10, 5));
+        System.out.println("10 / 5 = " + divider.calculate(10, 5));
         
         // Using default method
-        add.printResult(8, 3);
+        subtractor.printResult(20, 8);
         
         // Using static method
         Calculator.info();
         
-        System.out.println();
+        System.out.println("Better, but still too much code for simple operations!\n");
     }
     
-    public static void demonstrateBuiltInInterfaces() {
-        System.out.println("2. BUILT-IN FUNCTIONAL INTERFACES:");
+    // Step 3: Why functional interfaces are special
+    public static void step3_WhyFunctionalInterfaces() {
+        System.out.println("STEP 3: Why Functional Interfaces are Special\n");
         
-        // Predicate - test condition
-        Predicate<Integer> isEven = num -> num % 2 == 0;
-        System.out.println("Is 4 even? " + isEven.test(4));
-        System.out.println("Is 5 even? " + isEven.test(5));
+        System.out.println("Functional interfaces are special because:");
+        System.out.println("1. They have exactly ONE abstract method");
+        System.out.println("2. This makes them perfect for lambda expressions");
+        System.out.println("3. Lambda expressions = shorter, cleaner code");
+        System.out.println("4. We'll learn lambdas in the next lesson!\n");
         
-        // Function - transform input
-        Function<String, Integer> stringLength = str -> str.length();
-        System.out.println("Length of 'Hello': " + stringLength.apply("Hello"));
+        // Examples of what makes an interface functional
+        System.out.println("Examples of Functional Interfaces:");
         
-        // Consumer - consume input
-        Consumer<String> printer = str -> System.out.println("Processing: " + str);
-        printer.accept("Java");
+        StringChecker isEmpty = new StringChecker() {
+            @Override
+            public boolean check(String text) {
+                return text.isEmpty();
+            }
+        };
         
-        // Supplier - supply value
-        Supplier<Double> randomValue = () -> Math.random();
-        System.out.println("Random value: " + randomValue.get());
+        NumberProcessor printer = new NumberProcessor() {
+            @Override
+            public void process(int number) {
+                System.out.println("Processing: " + number);
+            }
+        };
         
-        System.out.println();
-    }
-    
-    public static void demonstratePredicates() {
-        System.out.println("3. PREDICATE EXAMPLES:");
+        ValueSupplier greeting = new ValueSupplier() {
+            @Override
+            public String getValue() {
+                return "Hello World!";
+            }
+        };
         
-        Predicate<String> isEmpty = str -> str.isEmpty();
-        Predicate<String> isLong = str -> str.length() > 5;
-        Predicate<Integer> isPositive = num -> num > 0;
-        
-        // Basic usage
-        System.out.println("Is '' empty? " + isEmpty.test(""));
-        System.out.println("Is 'Hello World' long? " + isLong.test("Hello World"));
-        
-        // Combining predicates
-        Predicate<String> isNotEmptyAndLong = isEmpty.negate().and(isLong);
-        System.out.println("Is 'Programming' not empty and long? " + 
-                          isNotEmptyAndLong.test("Programming"));
-        
-        // Predicate with collections
-        java.util.List<Integer> numbers = java.util.Arrays.asList(-2, -1, 0, 1, 2, 3);
-        long positiveCount = numbers.stream().filter(isPositive).count();
-        System.out.println("Positive numbers count: " + positiveCount);
+        // Using them
+        System.out.println("Is empty string empty? " + isEmpty.check(""));
+        printer.process(42);
+        System.out.println("Greeting: " + greeting.getValue());
         
         System.out.println();
     }
     
-    public static void demonstrateFunctions() {
-        System.out.println("4. FUNCTION EXAMPLES:");
+    // Step 4: Java's built-in functional interfaces (preview)
+    public static void step4_BuiltInInterfaces() {
+        System.out.println("STEP 4: Java's Built-in Functional Interfaces (Preview)\n");
         
-        Function<String, String> toUpperCase = str -> str.toUpperCase();
-        Function<String, Integer> wordCount = str -> str.split("\\s+").length;
-        Function<Integer, Integer> square = num -> num * num;
-        
-        // Basic usage
-        System.out.println("Uppercase: " + toUpperCase.apply("hello world"));
-        System.out.println("Word count: " + wordCount.apply("Java is awesome"));
-        System.out.println("Square of 5: " + square.apply(5));
-        
-        // Function composition
-        Function<String, Integer> upperCaseLength = toUpperCase.andThen(String::length);
-        System.out.println("Length after uppercase: " + upperCaseLength.apply("java"));
-        
-        // BiFunction example
-        BiFunction<Integer, Integer, Integer> power = (base, exp) -> (int) Math.pow(base, exp);
-        System.out.println("2^3 = " + power.apply(2, 3));
-        
+        System.out.println("Java provides many built-in functional interfaces:");
         System.out.println();
-    }
-    
-    public static void demonstrateConsumers() {
-        System.out.println("5. CONSUMER EXAMPLES:");
         
-        Consumer<String> logger = msg -> System.out.println("[LOG] " + msg);
-        Consumer<Integer> numberProcessor = num -> System.out.println("Processing number: " + num);
-        
-        // Basic usage
-        logger.accept("Application started");
-        numberProcessor.accept(42);
-        
-        // Consumer chaining
-        Consumer<String> upperCaseLogger = logger.andThen(msg -> 
-            System.out.println("[UPPER] " + msg.toUpperCase()));
-        upperCaseLogger.accept("chained consumer");
-        
-        // BiConsumer example
-        BiConsumer<String, Integer> keyValuePrinter = (key, value) -> 
-            System.out.println(key + " = " + value);
-        keyValuePrinter.accept("Age", 25);
-        
+        System.out.println("1. Predicate<T> - Tests a condition");
+        System.out.println("   - Has method: boolean test(T t)");
+        System.out.println("   - Example: Check if number is even");
         System.out.println();
-    }
-    
-    public static void demonstrateSuppliers() {
-        System.out.println("6. SUPPLIER EXAMPLES:");
         
-        Supplier<String> currentTime = () -> java.time.LocalTime.now().toString();
-        Supplier<Integer> randomNumber = () -> (int)(Math.random() * 100);
-        Supplier<java.util.List<String>> emptyList = () -> new java.util.ArrayList<>();
-        
-        // Basic usage
-        System.out.println("Current time: " + currentTime.get());
-        System.out.println("Random number: " + randomNumber.get());
-        System.out.println("Empty list: " + emptyList.get());
-        
-        // Lazy evaluation with Supplier
-        System.out.println("Lazy evaluation demo:");
-        processValue(true, () -> "Expensive computation result");
-        processValue(false, () -> "This won't be computed");
-        
+        System.out.println("2. Function<T,R> - Transforms input to output");
+        System.out.println("   - Has method: R apply(T t)");
+        System.out.println("   - Example: Convert string to its length");
         System.out.println();
+        
+        System.out.println("3. Consumer<T> - Consumes/processes input");
+        System.out.println("   - Has method: void accept(T t)");
+        System.out.println("   - Example: Print a value");
+        System.out.println();
+        
+        System.out.println("4. Supplier<T> - Supplies/generates a value");
+        System.out.println("   - Has method: T get()");
+        System.out.println("   - Example: Generate random number");
+        System.out.println();
+        
+        System.out.println("We'll use these with lambda expressions in the next lesson!");
+        System.out.println();
+        
+        System.out.println("=== SUMMARY ===");
+        System.out.println("✓ Functional Interface = Interface with ONE abstract method");
+        System.out.println("✓ Can have default and static methods");
+        System.out.println("✓ Foundation for lambda expressions");
+        System.out.println("✓ Java provides many built-in functional interfaces");
+        System.out.println("✓ Next: Learn Lambda Expressions!");
     }
-    
-    // Helper method for lazy evaluation
-    public static void processValue(boolean condition, Supplier<String> valueSupplier) {
-        if(condition) {
-            System.out.println("Value: " + valueSupplier.get());
-        } else {
-            System.out.println("Condition false, supplier not called");
-        }
+}
+
+// Helper classes for traditional approach
+class Addition implements Calculator {
+    @Override
+    public int calculate(int a, int b) {
+        return a + b;
+    }
+}
+
+class Multiplication implements Calculator {
+    @Override
+    public int calculate(int a, int b) {
+        return a * b;
     }
 }
