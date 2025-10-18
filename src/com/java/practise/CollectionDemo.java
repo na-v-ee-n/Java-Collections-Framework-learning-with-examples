@@ -1,10 +1,15 @@
 package com.java.practise;
 
-import java.util.*;
-
 public class CollectionDemo {
 
     public static void main(String[] args) {
+
+        String ogString = "Naveen";
+        StringBuilder sb = new StringBuilder();
+        for(int i=ogString.length();i>0;i-- ){
+            sb.append(ogString.charAt(i-1));
+        }
+        System.out.println(sb.toString());
         
         /* COLLECTION INTERFACE PRACTICE
          * 

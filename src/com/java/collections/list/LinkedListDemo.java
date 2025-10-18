@@ -12,6 +12,8 @@ public class LinkedListDemo {
     public static void main(String[] args) {
         System.out.println("=== LINKEDLIST DEMO ===\n");
         
+
+        
         // Creation
         LinkedList<String> cities = new LinkedList<>();
         
